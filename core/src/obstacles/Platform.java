@@ -11,17 +11,17 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import helpers.GameInfo;
 
-public class Obstacle extends Sprite {
+public class Platform extends Sprite {
 
     // physics world
     private World world;
     private Body body;
-    private String obsName;
+    private String platformName;
 
-    public Obstacle(World world, String obsName){
-        super(new Texture("Obstacles/" + obsName + ".png"));
+    public Platform(World world, String name){
+        super(new Texture("Obstacles/" + name + ".png"));
         this.world = world;
-        this.obsName = obsName;
+        this.platformName = name;
     }
 
     void createBody() {
@@ -53,8 +53,8 @@ public class Obstacle extends Sprite {
         createBody();
     }
 
-    public String getObsName() {
-        return this.obsName;
+    public String getPlatformName() {
+        return this.platformName;
     }
 
 
