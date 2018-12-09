@@ -1,4 +1,4 @@
-package bushes;
+package obstacles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,15 +11,15 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import helpers.GameInfo;
 
-public class Bush extends Sprite {
+public class Obstacle extends Sprite {
 
     // physics world
     private World world;
     private Body body;
     private String bushName;
 
-    public Bush(World world, String bushName){
-        super(new Texture("bushes/" + bushName + ".png"));
+    public Obstacle(World world, String bushName){
+        super(new Texture("Obstacles/" + bushName + ".png"));
         this.world = world;
         this.bushName = bushName;
     }

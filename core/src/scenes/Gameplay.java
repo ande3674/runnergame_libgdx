@@ -6,11 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import obstacles.Obstacle;
 
 public class Gameplay implements Screen {
 
@@ -19,8 +23,15 @@ public class Gameplay implements Screen {
     private OrthographicCamera mainCamera;
     private Viewport gameViewport;
 
+    private OrthographicCamera box2DCamera;
+    private Box2DDebugRenderer debugRenderer;
+
+    private World world;
+
     private Sprite[] bgs;
     private float lastXPosition;
+
+    private Obstacle b;
 
     public Gameplay(GameMain game){
         this.game = game;
@@ -29,6 +40,22 @@ public class Gameplay implements Screen {
         mainCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
 
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
+
+        box2DCamera = new OrthographicCamera();
+
+        // divide by GameInfo.PPM so that 100 px = 1 m
+        box2DCamera.setToOrtho(false, GameInfo.WIDTH / GameInfo.PPM, GameInfo.HEIGHT / GameInfo.PPM);
+        box2DCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
+
+        debugRenderer = new Box2DDebugRenderer();
+
+        // in our world we want the force of gravity
+        world = new World(new Vector2(0, -9.8f), true);
+
+        // TODO add a bush
+        b = new Obstacle(world, "kirby");
+        //b.setSize(100f, 100f);
+        b.setSpritePosition(GameInfo.WIDTH / 2f, 0);
 
         createBackgrounds();
     }
@@ -40,7 +67,7 @@ public class Gameplay implements Screen {
     */
     void update(float dt){
 
-        moveCamera();
+        //moveCamera();
         checkBackgroundsOutOfBounds();
     }
     // moves the camera down along the repeated background images
@@ -94,10 +121,12 @@ public class Gameplay implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
-
         drawBackgrounds();
-
+        // TODO
+        game.getBatch().draw(b, b.getX(), b.getY());
         game.getBatch().end();
+
+        debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
