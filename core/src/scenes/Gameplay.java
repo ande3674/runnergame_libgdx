@@ -15,6 +15,7 @@ import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
 import obstacles.Obstacle;
+import obstacles.ObstacleController;
 
 public class Gameplay implements Screen {
 
@@ -31,7 +32,7 @@ public class Gameplay implements Screen {
     private Sprite[] bgs;
     private float lastXPosition;
 
-    private Obstacle b;
+    private ObstacleController obstacleController;
 
     public Gameplay(GameMain game){
         this.game = game;
@@ -52,10 +53,8 @@ public class Gameplay implements Screen {
         // in our world we want the force of gravity
         world = new World(new Vector2(0, -9.8f), true);
 
-        // TODO add a bush
-        b = new Obstacle(world, "kirby");
-        //b.setSize(100f, 100f);
-        b.setSpritePosition(GameInfo.WIDTH / 2f, 0);
+        // create obstacle controller
+        obstacleController = new ObstacleController(world);
 
         createBackgrounds();
     }
@@ -67,12 +66,12 @@ public class Gameplay implements Screen {
     */
     void update(float dt){
 
-        //moveCamera();
+        moveCamera();
         checkBackgroundsOutOfBounds();
     }
     // moves the camera down along the repeated background images
     void moveCamera(){
-        mainCamera.position.x += 3;
+        mainCamera.position.x += 1f;
     }
     // this method repeats our background image 3 times so the game can scroll
     void createBackgrounds() {
@@ -122,8 +121,9 @@ public class Gameplay implements Screen {
 
         game.getBatch().begin();
         drawBackgrounds();
-        // TODO
-        game.getBatch().draw(b, b.getX(), b.getY());
+
+        obstacleController.drawObstacles(game.getBatch());
+
         game.getBatch().end();
 
         debugRenderer.render(world, box2DCamera.combined);
