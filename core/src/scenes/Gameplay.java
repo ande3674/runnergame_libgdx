@@ -1,6 +1,7 @@
 package scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -69,7 +70,17 @@ public class Gameplay implements Screen {
     GAME DESIGNER DEFINED METHODS ...
 
     */
+    void handleInput(float dt) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            player.movePlayer(2f, 0);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+            player.movePlayer(0, 2f);
+        }
+    }
+
+
     void update(float dt){
+        handleInput(dt);
         //moveCamera();
         checkBackgroundsOutOfBounds();
         obstacleController.setCameraX(mainCamera.position.x);
@@ -77,7 +88,7 @@ public class Gameplay implements Screen {
     }
     // moves the camera down along the repeated background images
     void moveCamera(){
-        mainCamera.position.x += 2f;
+        mainCamera.position.x += 1.5f;
     }
     // this method repeats our background image 3 times so the game can scroll
     void createBackgrounds() {
@@ -139,7 +150,7 @@ public class Gameplay implements Screen {
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
 
-        //player.updatePlayer();
+        player.updatePlayer();
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 

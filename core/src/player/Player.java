@@ -49,6 +49,11 @@ public class Player extends Sprite {
         shape.dispose();
     }
 
+    // MOVE the player
+    public void movePlayer(float x, float y) {
+        body.setLinearVelocity(x, y);
+    }
+
     // method to UPDATE the player
     public void updatePlayer() {
         setPosition(body.getPosition().x * GameInfo.PPM,
@@ -59,7 +64,7 @@ public class Player extends Sprite {
     // method to DRAW the player
     public void drawPlayer(SpriteBatch batch) {
         batch.draw(this, getX() - getWidth() / 2f,
-                (getY() - getHeight() / 2f) + 45);
+                (getY() - getHeight() / 2f) + 25);
     }
 
 }
