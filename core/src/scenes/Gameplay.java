@@ -81,7 +81,7 @@ public class Gameplay implements Screen {
 
     void update(float dt){
         handleInput(dt);
-        //moveCamera();
+        moveCamera();
         checkBackgroundsOutOfBounds();
         obstacleController.setCameraX(mainCamera.position.x);
         obstacleController.createAndArrangeNewObstacles();
