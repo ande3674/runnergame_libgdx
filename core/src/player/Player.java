@@ -36,7 +36,7 @@ public class Player extends Sprite {
 
         // shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((getWidth()/ 2f)/ GameInfo.PPM, (getHeight()/2f)/GameInfo.PPM);
+        shape.setAsBox(( getWidth()/ 2f - 60 )/ GameInfo.PPM, ( getHeight()/2f - 50)/GameInfo.PPM);
 
         // fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -59,7 +59,7 @@ public class Player extends Sprite {
     // method to DRAW the player
     public void drawPlayer(SpriteBatch batch) {
         batch.draw(this, getX() - getWidth() / 2f,
-                (getY() - getHeight() / 2f) + 40);
+                (getY() - getHeight() / 2f) + 45);
     }
 
 }
