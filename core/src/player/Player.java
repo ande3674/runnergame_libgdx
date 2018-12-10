@@ -33,6 +33,8 @@ public class Player extends Sprite {
         bodyDef.position.set(getX() / GameInfo.PPM, getY() / GameInfo.PPM);
 
         body = world.createBody(bodyDef);
+        // prevent the body from rotating .....
+        body.setFixedRotation(true);
 
         // shape
         PolygonShape shape = new PolygonShape();
