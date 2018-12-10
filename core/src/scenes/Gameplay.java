@@ -65,13 +65,14 @@ public class Gameplay implements Screen {
 
     */
     void update(float dt){
-
         moveCamera();
         checkBackgroundsOutOfBounds();
+        obstacleController.setCameraX(mainCamera.position.x);
+        obstacleController.createAndArrangeNewObstacles();
     }
     // moves the camera down along the repeated background images
     void moveCamera(){
-        mainCamera.position.x += 1f;
+        mainCamera.position.x += 2f;
     }
     // this method repeats our background image 3 times so the game can scroll
     void createBackgrounds() {
