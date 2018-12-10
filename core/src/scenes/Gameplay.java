@@ -16,6 +16,7 @@ import com.mygdx.runnergame.GameMain;
 import helpers.GameInfo;
 import obstacles.Obstacle;
 import obstacles.ObstacleController;
+import player.Player;
 
 public class Gameplay implements Screen {
 
@@ -33,6 +34,8 @@ public class Gameplay implements Screen {
     private float lastXPosition;
 
     private ObstacleController obstacleController;
+
+    private Player player;
 
     public Gameplay(GameMain game){
         this.game = game;
@@ -56,6 +59,8 @@ public class Gameplay implements Screen {
         // create obstacle controller
         obstacleController = new ObstacleController(world);
 
+        player = obstacleController.positionThePlayer(player);
+
         createBackgrounds();
     }
 
@@ -65,7 +70,7 @@ public class Gameplay implements Screen {
 
     */
     void update(float dt){
-        moveCamera();
+        //moveCamera();
         checkBackgroundsOutOfBounds();
         obstacleController.setCameraX(mainCamera.position.x);
         obstacleController.createAndArrangeNewObstacles();
@@ -125,12 +130,18 @@ public class Gameplay implements Screen {
 
         obstacleController.drawObstacles(game.getBatch());
 
+        player.drawPlayer(game.getBatch());
+
         game.getBatch().end();
 
         debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
+
+        //player.updatePlayer();
+
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
     }
 

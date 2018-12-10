@@ -28,7 +28,7 @@ public class Platform extends Sprite {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        bodyDef.position.set((getX() + getWidth() / 2) / GameInfo.PPM, getY() / GameInfo.PPM);
+        bodyDef.position.set(getX() / GameInfo.PPM, getY() / GameInfo.PPM);
 
         // create body with world and bodyDef...
         body = world.createBody(bodyDef);

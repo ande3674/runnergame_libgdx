@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Random;
 
 import helpers.GameInfo;
+import player.Player;
 
 public class ObstacleController {
 
@@ -126,6 +127,11 @@ public class ObstacleController {
     // set the x position of the camera
     public void setCameraX(float cameraX){
         this.cameraX = cameraX;
+    }
+
+    public Player positionThePlayer(Player player){
+        player = new Player(world, platforms.get(0).getX(), platforms.get(0).getY() + 50);
+        return player;
     }
 }
 
