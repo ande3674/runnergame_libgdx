@@ -19,6 +19,7 @@ import com.mygdx.runnergame.GameMain;
 import helpers.GameInfo;
 import scenes.Gameplay;
 import scenes.Highscore;
+import scenes.Options;
 
 public class MainMenuButtons {
 
@@ -99,7 +100,7 @@ public class MainMenuButtons {
         optionsBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                game.setScreen(new Options(game));
             }
         });
 

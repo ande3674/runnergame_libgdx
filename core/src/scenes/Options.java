@@ -10,19 +10,17 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
-import huds.MainMenuButtons;
 
-public class MainMenu implements Screen {
+public class Options implements Screen {
 
     private GameMain game;
+
     private OrthographicCamera mainCamera;
     private Viewport gameViewport;
 
     private Texture bg;
 
-    private MainMenuButtons buttons;
-
-    public MainMenu(GameMain game){
+    public Options(GameMain game){
         this.game = game;
 
         mainCamera = new OrthographicCamera();
@@ -32,9 +30,6 @@ public class MainMenu implements Screen {
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
         bg = new Texture("Backgrounds/desert_BG.png");
-
-        buttons = new MainMenuButtons(game);
-
     }
 
 
@@ -56,15 +51,14 @@ public class MainMenu implements Screen {
 
 
         // draw the buttons using the Stage...
-        game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
-        buttons.getStage().draw();
+        //game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
+        //buttons.getStage().draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-        // allow window to be resized...
-        gameViewport.update(width, height);
+
     }
 
     @Override
@@ -84,9 +78,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
-        bg.dispose();
-        buttons.getStage().dispose();
 
     }
 }
