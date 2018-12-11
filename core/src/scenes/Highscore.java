@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import huds.HighscoreButtons;
 
 public class Highscore implements Screen {
 
@@ -19,6 +20,8 @@ public class Highscore implements Screen {
     private Viewport gameViewport;
 
     private Texture bg;
+
+    private HighscoreButtons buttons;
 
     public Highscore(GameMain game) {
         this.game = game;
@@ -31,7 +34,7 @@ public class Highscore implements Screen {
 
         bg = new Texture("Backgrounds/desert_BG.png");
 
-
+        buttons = new HighscoreButtons(game);
 
     }
 
@@ -48,14 +51,18 @@ public class Highscore implements Screen {
 
         game.getBatch().begin();
         // draw here
+
         game.getBatch().draw(bg, 0, 0);
         game.getBatch().end();
+
+        game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
+        buttons.getStage().draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        gameViewport.update(width, height);
     }
 
     @Override
