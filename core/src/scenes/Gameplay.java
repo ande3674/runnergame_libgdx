@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import huds.UIHud;
 import obstacles.Obstacle;
 import obstacles.ObstacleController;
 import player.Player;
@@ -38,6 +39,8 @@ public class Gameplay implements Screen {
 
     private Player player;
 
+    private UIHud hud;
+
     public Gameplay(GameMain game){
         this.game = game;
 
@@ -53,6 +56,9 @@ public class Gameplay implements Screen {
         box2DCamera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
 
         debugRenderer = new Box2DDebugRenderer();
+
+        // create UI
+        hud = new UIHud(game);
 
         // in our world we want the force of gravity
         world = new World(new Vector2(0, -9.8f), true);
@@ -158,6 +164,9 @@ public class Gameplay implements Screen {
         game.getBatch().setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
 
+        game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
+
         player.updatePlayer();
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
@@ -166,7 +175,7 @@ public class Gameplay implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        gameViewport.update(width, height);
     }
 
     @Override
