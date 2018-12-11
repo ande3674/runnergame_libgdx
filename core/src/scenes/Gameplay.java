@@ -186,6 +186,11 @@ public class Gameplay implements Screen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
+        bgs[0].getTexture().dispose();
+        bgs[1].getTexture().dispose();
+        bgs[2].getTexture().dispose();
+        player.getTexture().dispose();
+        debugRenderer.dispose();
     }
 }

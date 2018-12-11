@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import scenes.Gameplay;
+import scenes.MainMenu;
 
 public class GameMain extends Game {
 	private SpriteBatch batch;
@@ -22,7 +23,7 @@ public class GameMain extends Game {
 		music.setLooping(true);
 		music.play();
 		// open new game screen
-		setScreen(new Gameplay(this));
+		setScreen(new MainMenu(this));
 	}
 
 	@Override
