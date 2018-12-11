@@ -66,17 +66,22 @@ public class Gameplay implements Screen {
     }
 
     /*
-
+    *
     GAME DESIGNER DEFINED METHODS ...
-
+    *
     */
     void handleInput(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            player.setWalking(true);
             player.movePlayer(2f, 0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+            player.setWalking(true);
             player.movePlayer(0, 2f);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            player.setWalking(true);
             player.movePlayer(-2f, 0);
+        }else {
+            player.setWalking(false);
         }
     }
 
@@ -143,7 +148,8 @@ public class Gameplay implements Screen {
 
         obstacleController.drawObstacles(game.getBatch());
 
-        player.drawPlayer(game.getBatch());
+        player.drawPlayerIdle(game.getBatch());
+        player.drawPlayerAnimation(game.getBatch());
 
         game.getBatch().end();
 

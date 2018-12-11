@@ -1,14 +1,19 @@
 package player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.model.Animation;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 import helpers.GameInfo;
 
@@ -18,13 +23,20 @@ public class Player extends Sprite {
     private World world;
     private Body body;
 
-    // animation variables
+    // animation variables ...
+    private TextureAtlas playerAtlas;
+    private Animation animation;
+    private com.badlogic.gdx.graphics.g2d.Animation animation1;
+    private float elapsedTime;
+
+    private boolean isWalking;
 
     public Player(World world, float x, float y) {
         super(new Texture("Players/bear.png"));
         this.world = world;
         setPosition(x, y);
         createBody();
+        playerAtlas = new TextureAtlas("Player Animation/sprites.txt");
     }
 
     private void createBody() {
@@ -55,6 +67,15 @@ public class Player extends Sprite {
 
     // MOVE the player
     public void movePlayer(float x, float y) {
+        // Keep player facing the right way...
+        if (x < 0 && !this.isFlipX()){
+            // moving left.. flip player to face left
+            this.flip(true, false);
+        } else if (x > 0 && this.isFlipX()){
+            // moving right.. flip player to face right
+            this.flip(true, false);
+        }
+        // set player motion...
         body.setLinearVelocity(x, y);
     }
 
@@ -66,9 +87,41 @@ public class Player extends Sprite {
     }
 
     // method to DRAW the player
-    public void drawPlayer(SpriteBatch batch) {
-        batch.draw(this, getX() - getWidth() / 2f,
-                (getY() - getHeight() / 2f) );
+    public void drawPlayerIdle(SpriteBatch batch) {
+        if (!isWalking) {
+            batch.draw(this, getX() - getWidth() / 2f,
+                    (getY() - getHeight() / 2f));
+        }
+    }
+
+    public void drawPlayerAnimation(SpriteBatch batch){
+        if(isWalking){
+
+            elapsedTime += Gdx.graphics.getDeltaTime();
+
+            // let the player flip left or right...
+            Array<TextureAtlas.AtlasRegion> frames = playerAtlas.getRegions();
+            for (TextureRegion frame : frames){
+                if (body.getLinearVelocity().x < 0 && !frame.isFlipX()){
+                    // moving left..
+                    frame.flip(true, false);// flip x left or right (true) but not up and down (false)
+                } else if (body.getLinearVelocity().x > 0 && frame.isFlipX()){
+                    // moving right..
+                    frame.flip(true, false);
+                }
+            }
+
+            animation = new Animation();
+            animation1 = new com.badlogic.gdx.graphics.g2d.Animation(1/10f, playerAtlas.getRegions());
+
+            batch.draw((TextureRegion)animation1.getKeyFrame(elapsedTime, true),
+                    getX() - getWidth() / 2f,
+                    getY() - getHeight() / 2f);
+        }
+    }
+
+    public void setWalking(boolean isWalking){
+        this.isWalking = isWalking;
     }
 
 }
