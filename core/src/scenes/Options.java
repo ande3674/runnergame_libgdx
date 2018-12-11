@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import huds.OptionsButtons;
 
 public class Options implements Screen {
 
@@ -19,6 +20,8 @@ public class Options implements Screen {
     private Viewport gameViewport;
 
     private Texture bg;
+
+    private OptionsButtons buttons;
 
     public Options(GameMain game){
         this.game = game;
@@ -30,6 +33,8 @@ public class Options implements Screen {
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
         bg = new Texture("Backgrounds/desert_BG.png");
+
+        buttons = new OptionsButtons(game);
     }
 
 
@@ -51,14 +56,15 @@ public class Options implements Screen {
 
 
         // draw the buttons using the Stage...
-        //game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
-        //buttons.getStage().draw();
+        // set projection matrix so we can actually render what our stage contains
+        game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
+        buttons.getStage().draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        gameViewport.update(width, height);
     }
 
     @Override
@@ -78,6 +84,7 @@ public class Options implements Screen {
 
     @Override
     public void dispose() {
-
+        buttons.getStage().dispose();
+        bg.dispose();
     }
 }

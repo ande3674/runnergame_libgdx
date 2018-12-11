@@ -73,14 +73,13 @@ public class HighscoreButtons {
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 40;
 
-        BitmapFont scoreFont = generator.generateFont(parameter);
-        BitmapFont coinFont = generator.generateFont(parameter);
+        BitmapFont font = generator.generateFont(parameter);
 
-        scoreLabel = new Label("100", new Label.LabelStyle(scoreFont, Color.WHITE));
-        coinLabel = new Label("100", new Label.LabelStyle(coinFont, Color.WHITE));
+        scoreLabel = new Label("100", new Label.LabelStyle(font, Color.WHITE));
+        coinLabel = new Label("100", new Label.LabelStyle(font, Color.WHITE));
 
-        score = new Label("High score: ", new Label.LabelStyle(scoreFont, Color.WHITE));
-        coin = new Label("High coins: ", new Label.LabelStyle(scoreFont, Color.WHITE));
+        score = new Label("High score: ", new Label.LabelStyle(font, Color.WHITE));
+        coin = new Label("High coins: ", new Label.LabelStyle(font, Color.WHITE));
 
         backBtn.setPosition(120, 70, Align.center);
 
