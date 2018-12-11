@@ -18,8 +18,10 @@ public class Player extends Sprite {
     private World world;
     private Body body;
 
+    // animation variables
+
     public Player(World world, float x, float y) {
-        super(new Texture("Players/female_runner.png"));
+        super(new Texture("Players/bear.png"));
         this.world = world;
         setPosition(x, y);
         createBody();
@@ -38,7 +40,7 @@ public class Player extends Sprite {
 
         // shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(( getWidth()/ 2f - 60 )/ GameInfo.PPM, ( getHeight()/2f - 50)/GameInfo.PPM);
+        shape.setAsBox(( getWidth()/ 2f )/ GameInfo.PPM, ( getHeight()/2f )/GameInfo.PPM);
 
         // fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -66,7 +68,7 @@ public class Player extends Sprite {
     // method to DRAW the player
     public void drawPlayer(SpriteBatch batch) {
         batch.draw(this, getX() - getWidth() / 2f,
-                (getY() - getHeight() / 2f) + 25);
+                (getY() - getHeight() / 2f) );
     }
 
 }

@@ -75,13 +75,15 @@ public class Gameplay implements Screen {
             player.movePlayer(2f, 0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)){
             player.movePlayer(0, 2f);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            player.movePlayer(-2f, 0);
         }
     }
 
 
     void update(float dt){
         handleInput(dt);
-        moveCamera();
+        //moveCamera();
         checkBackgroundsOutOfBounds();
         obstacleController.setCameraX(mainCamera.position.x);
         obstacleController.createAndArrangeNewObstacles();
