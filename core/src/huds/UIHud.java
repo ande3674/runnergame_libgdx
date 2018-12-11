@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import scenes.MainMenu;
 
 public class UIHud {
 
@@ -28,11 +29,11 @@ public class UIHud {
     private Stage stage;
     private Viewport gameViewport;
 
-    private Image coinImg, lifeImg, scoreImg;
+    private Image coinImg, lifeImg, scoreImg, pausePanel;
 
     private Label coinLbl, lifeLbl, scoreLbl, scoreLbl2;
 
-    private ImageButton pauseBtn;
+    private ImageButton pauseBtn, resumeBtn, quitBtn;
 
     public UIHud(GameMain game) {
 
@@ -40,6 +41,9 @@ public class UIHud {
 
         gameViewport = new FitViewport(GameInfo.WIDTH, GameInfo.HEIGHT, new OrthographicCamera());
         stage = new Stage(gameViewport, game.getBatch());
+
+        // important for registering clicks!!!
+        Gdx.input.setInputProcessor(stage);
 
         // call the create methods...
         createLabels();
@@ -105,9 +109,48 @@ public class UIHud {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // code for pausing the game
+                createPausePanel();
             }
         });
 
+    }
+
+    void createPausePanel() {
+        // create
+        pausePanel = new Image(new Texture("Buttons/Pause/Pause Panel.png"));
+        resumeBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Pause/Resume.png"))));
+        quitBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Pause/Quit 2.png"))));
+
+        // position
+        pausePanel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 20, Align.center);
+        resumeBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 30, Align.center);
+        quitBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 100, Align.center);
+
+        // add listeners
+        resumeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+        quitBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // quitting --> set screen to the main menu...
+                game.setScreen(new MainMenu(game));
+            }
+        });
+
+        // add actors to the stage...
+        stage.addActor(pausePanel);
+        stage.addActor(resumeBtn);
+        stage.addActor(quitBtn);
+    }
+
+    void removePausePanel() {
+        pausePanel.remove();
+        resumeBtn.remove();
+        quitBtn.remove();
     }
 
     public Stage getStage() {

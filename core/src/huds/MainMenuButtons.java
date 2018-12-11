@@ -62,14 +62,14 @@ public class MainMenuButtons {
         highscoreBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Score button.png"))));
         optionsBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Option button.png"))));
         quitBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Quit button 2.png"))));
-        musicBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
+        musicBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Music/Music On.png"))));
 
         // position buttons
-        playBtn.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f + 125, Align.center);
-        highscoreBtn.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f, Align.center);
-        optionsBtn.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f + 125, Align.center);
-        quitBtn.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f, Align.center);
-        musicBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 125, Align.center);
+        playBtn.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f + 105, Align.center);
+        highscoreBtn.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f - 20, Align.center);
+        optionsBtn.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f + 105, Align.center);
+        quitBtn.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f - 20, Align.center);
+        musicBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 105, Align.center);
     }
 
     void addAllListeners() {
