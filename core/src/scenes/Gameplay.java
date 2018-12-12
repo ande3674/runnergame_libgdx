@@ -126,6 +126,7 @@ public class Gameplay implements Screen, ContactListener {
             obstacleController.setCameraX(mainCamera.position.x);
             obstacleController.createAndArrangeNewObstacles();
             obstacleController.removeOffScreenCollectables();
+            checkPlayerBounds();
         }
     }
     // moves the camera down along the repeated background images
@@ -164,6 +165,22 @@ public class Gameplay implements Screen, ContactListener {
         }
     }
 
+    void checkPlayerBounds() {
+        // Check player out of bounds to the left...
+        if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
+            // debug...
+            System.out.println("Player out of bounds to the left");
+            GameManager.getInstance().isPaused = true;
+        }
+
+        // Check player out of bounds to ...
+        if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
+            // debug...
+            System.out.println("Player out of bounds to the left");
+            GameManager.getInstance().isPaused = true;
+        }
+    }
+
 
     // SCREEN INTERFACE METHODS...
 
@@ -191,7 +208,7 @@ public class Gameplay implements Screen, ContactListener {
 
         game.getBatch().end();
 
-        debugRenderer.render(world, box2DCamera.combined);
+        //debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
