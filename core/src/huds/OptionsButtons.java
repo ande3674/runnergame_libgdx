@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import scenes.MainMenu;
 
 public class OptionsButtons {
@@ -92,7 +93,8 @@ public class OptionsButtons {
         backBtn.setPosition(GameInfo.WIDTH / 2f - 300, GameInfo.HEIGHT / 2f - 150, Align.center);
 
         // position check image
-        img.setPosition(GameInfo.WIDTH / 2f + 70, mediumBtn.getY() + 45, Align.center);
+        //img.setPosition(GameInfo.WIDTH / 2f + 70, mediumBtn.getY() + 45, Align.center);
+        positionTheDifficultyCheck();
 
         // position label...
         mainLabel.setPosition(GameInfo.WIDTH / 2f - 230, GameInfo.HEIGHT / 2f + 150, Align.center);
@@ -103,6 +105,7 @@ public class OptionsButtons {
         easyBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                changeDifficulty(0);
                 img.setY(easyBtn.getY() + 30);
             }
         });
@@ -110,6 +113,7 @@ public class OptionsButtons {
         mediumBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                changeDifficulty(1);
                 img.setY(mediumBtn.getY() + 30);
             }
         });
@@ -117,6 +121,7 @@ public class OptionsButtons {
         hardBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                changeDifficulty(2);
                 img.setY(hardBtn.getY() + 30);
             }
         });
@@ -128,6 +133,38 @@ public class OptionsButtons {
             }
         });
 
+    }
+
+    void positionTheDifficultyCheck() {
+
+        if (GameManager.getInstance().gameData.isEasyDifficulty()) {
+            img.setPosition(GameInfo.WIDTH / 2f + 70, easyBtn.getY() + 30, Align.center);
+        }
+        if (GameManager.getInstance().gameData.isMediumDifficulty()) {
+            img.setPosition(GameInfo.WIDTH / 2f + 70, mediumBtn.getY() + 30, Align.center);
+        }
+        if (GameManager.getInstance().gameData.isHardDifficulty()) {
+            img.setPosition(GameInfo.WIDTH / 2f + 70, hardBtn.getY() + 30, Align.center);
+        }
+    }
+
+    void changeDifficulty(int diff) {
+        if (diff == 0) {
+            GameManager.getInstance().gameData.setEasyDifficulty(true);
+            GameManager.getInstance().gameData.setMediumDifficulty(false);
+            GameManager.getInstance().gameData.setHardDifficulty(false);
+
+        } else if (diff == 1) {
+            GameManager.getInstance().gameData.setEasyDifficulty(false);
+            GameManager.getInstance().gameData.setMediumDifficulty(true);
+            GameManager.getInstance().gameData.setHardDifficulty(false);
+
+        } else if (diff == 2) {
+            GameManager.getInstance().gameData.setEasyDifficulty(false);
+            GameManager.getInstance().gameData.setMediumDifficulty(false);
+            GameManager.getInstance().gameData.setHardDifficulty(true);
+        }
+        GameManager.getInstance().saveData();
     }
 
     public Stage getStage() {

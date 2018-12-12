@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import scenes.MainMenu;
 
 public class HighscoreButtons {
@@ -75,8 +76,10 @@ public class HighscoreButtons {
 
         BitmapFont font = generator.generateFont(parameter);
 
-        scoreLabel = new Label("100", new Label.LabelStyle(font, Color.WHITE));
-        coinLabel = new Label("100", new Label.LabelStyle(font, Color.WHITE));
+        scoreLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getHighscore()),
+                new Label.LabelStyle(font, Color.WHITE));
+        coinLabel = new Label(String.valueOf(GameManager.getInstance().gameData.getCoinHighscore()),
+                new Label.LabelStyle(font, Color.WHITE));
 
         score = new Label("High score: ", new Label.LabelStyle(font, Color.WHITE));
         coin = new Label("High coins: ", new Label.LabelStyle(font, Color.WHITE));
