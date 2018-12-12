@@ -68,7 +68,7 @@ public class OptionsButtons {
         easyBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
         mediumBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
         hardBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
-        backBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
+        backBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/arrow_left.png"))));
 
         // FONT CODE...
         FreeTypeFontGenerator generator =
@@ -89,7 +89,7 @@ public class OptionsButtons {
         easyBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 150, Align.center);
         mediumBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f + 50, Align.center);
         hardBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f -50, Align.center);
-        backBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 150, Align.center);
+        backBtn.setPosition(GameInfo.WIDTH / 2f - 300, GameInfo.HEIGHT / 2f - 150, Align.center);
 
         // position check image
         img.setPosition(GameInfo.WIDTH / 2f + 70, mediumBtn.getY() + 45, Align.center);

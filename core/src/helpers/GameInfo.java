@@ -12,4 +12,8 @@ public class GameInfo {
     public static final short COLLECTABLE = 4;
     public static final short DESTROYED = 6;
 
+    // Use these constants so you don't have to remember the file names ...
+    public static final String COIN = "Coin";
+    public static final String LIFE = "life";
+
 }

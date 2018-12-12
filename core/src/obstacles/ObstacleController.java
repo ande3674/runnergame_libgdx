@@ -92,6 +92,24 @@ public class ObstacleController {
                 platformPositionX += DISTANCE_BETWEEN_PLATFORMS;
                 tempY = r.nextFloat() * (maxPlatformY - minPlatformY) + minPlatformY;
                 lastPlatformPositionX = platformPositionX;
+
+                if (!firstTimePositioning){
+                    int rand = r.nextInt(10); // get a random int 0-9
+                    if (rand < 8){
+                        int randC = r.nextInt(5);
+                        if (randC < 4){
+                            // TODO spawn a life, if life count is lower than 2
+                            Collectables collectable = new Collectables(world, GameInfo.LIFE);
+                            collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
+                            collectables.add(collectable);
+                        } else {
+                            // spawn a coin
+                            Collectables collectable = new Collectables(world, GameInfo.COIN);
+                            collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
+                            collectables.add(collectable);
+                        }
+                    }
+                }
             }
         }
 
@@ -158,6 +176,18 @@ public class ObstacleController {
         if (obstacles.size + platforms.size == 7){
             createObstacles();
             positionObstacles(false);
+        }
+    }
+
+    public void removeOffScreenCollectables() {
+        for (int i = 0 ; i < collectables.size ; i++){
+            if ((collectables.get(i).getX() - GameInfo.WIDTH / 2f + GameInfo.WIDTH - 15) < cameraX) {
+                collectables.get(i).getTexture().dispose();
+                collectables.removeIndex(i);
+
+                // debug stuff...
+                //System.out.println("Collectible has been removed!");
+            }
         }
     }
     // set the x position of the camera

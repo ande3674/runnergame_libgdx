@@ -64,7 +64,7 @@ public class HighscoreButtons {
 
     void createAndPositionUIElements() {
 
-        backBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
+        backBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/arrow_left.png"))));
 
         // FONT CODE...
         FreeTypeFontGenerator generator =

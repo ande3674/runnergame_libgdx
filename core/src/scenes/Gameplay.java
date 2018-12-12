@@ -103,10 +103,11 @@ public class Gameplay implements Screen, ContactListener {
 
     void update(float dt){
         handleInput(dt);
-        //moveCamera();
+        moveCamera();
         checkBackgroundsOutOfBounds();
         obstacleController.setCameraX(mainCamera.position.x);
         obstacleController.createAndArrangeNewObstacles();
+        obstacleController.removeOffScreenCollectables();
     }
     // moves the camera down along the repeated background images
     void moveCamera(){
@@ -173,11 +174,13 @@ public class Gameplay implements Screen, ContactListener {
 
         debugRenderer.render(world, box2DCamera.combined);
 
-        game.getBatch().setProjectionMatrix(mainCamera.combined);
-        mainCamera.update();
-
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
+        // it is important that the following two statements come after the two before...
+        // projection matrix needs to be set to the main camera so we follow its
+        // movement on the screen
+        game.getBatch().setProjectionMatrix(mainCamera.combined);
+        mainCamera.update();
 
         player.updatePlayer();
 
