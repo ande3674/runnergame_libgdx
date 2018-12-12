@@ -8,6 +8,7 @@ import java.util.Random;
 
 import collectables.Collectables;
 import helpers.GameInfo;
+import helpers.GameManager;
 import player.Player;
 
 public class ObstacleController {
@@ -112,10 +113,17 @@ public class ObstacleController {
                     if (rand < 8){
                         int randC = r.nextInt(5);
                         if (randC < 1){
-                            // TODO spawn a life, if life count is lower than 2
-                            Collectables collectable = new Collectables(world, GameInfo.LIFE);
-                            collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
-                            collectables.add(collectable);
+                            // spawn a life, if life count is lower than 3
+                            if (GameManager.getInstance().lifeScore < 3) {
+                                Collectables collectable = new Collectables(world, GameInfo.LIFE);
+                                collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
+                                collectables.add(collectable);
+                            } else {
+                                // spawn a coin
+                                Collectables collectable = new Collectables(world, GameInfo.COIN);
+                                collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
+                                collectables.add(collectable);
+                            }
                         } else {
                             // spawn a coin
                             Collectables collectable = new Collectables(world, GameInfo.COIN);
@@ -138,12 +146,12 @@ public class ObstacleController {
         }
 
         //delete later - testing adding collectables
-        Collectables c1 = new Collectables(world, "Coin");
-        Collectables c2 = new Collectables(world, "life");
-        c1.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 80);
-        c2.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 120);
-        collectables.add(c1);
-        collectables.add(c2);
+//        Collectables c1 = new Collectables(world, "Coin");
+//        Collectables c2 = new Collectables(world, "life");
+//        c1.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 80);
+//        c2.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 120);
+//        collectables.add(c1);
+//        collectables.add(c2);
     }
 
     // draw the platforms and obstacles and spikes...

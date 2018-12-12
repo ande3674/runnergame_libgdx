@@ -241,6 +241,7 @@ public class Gameplay implements Screen, ContactListener {
             // new high score?????
 
             // show end score
+            hud.createGameOverPanel();
 
             // load main menu
             // Use ACTIONS here to create cool effects...

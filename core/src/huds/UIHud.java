@@ -174,6 +174,39 @@ public class UIHud {
         quitBtn.remove();
     }
 
+    public void createGameOverPanel(){
+        // panel to show the player the score and game info when the game is over...
+        // FONT CODE...
+        FreeTypeFontGenerator generator =
+                new FreeTypeFontGenerator(Gdx.files.internal("Fonts/blow.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 60;
+        BitmapFont font = generator.generateFont(parameter);
+
+        // Labels
+        Label gameOverLabel = new Label("Score: ", new Label.LabelStyle(font, Color.WHITE));
+        Label endScoreLabel = new Label(String.valueOf(GameManager.getInstance().score),
+                new Label.LabelStyle(font, Color.WHITE));
+        Label endCoinScoreLabel = new Label(String.valueOf(GameManager.getInstance().coinScore),
+                new Label.LabelStyle(font, Color.WHITE));
+
+        Image c = new Image(new Texture("Collectables/Coin.png"));
+
+        // Position everything....
+        gameOverLabel.setPosition(GameInfo.WIDTH / 2f - 100, GameInfo.HEIGHT / 2f + 100, Align.center);
+        endScoreLabel.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f + 100, Align.center);
+        c.setPosition(GameInfo.WIDTH / 2f - 50, GameInfo.HEIGHT / 2f - 100, Align.center);
+        endCoinScoreLabel.setPosition(GameInfo.WIDTH / 2f + 50, GameInfo.HEIGHT / 2f - 100, Align.center);
+
+        // add to stage
+        stage.addActor(gameOverLabel);
+        stage.addActor(endScoreLabel);
+        stage.addActor(c);
+        stage.addActor(endCoinScoreLabel);
+
+    }
+
     public void incrementScore(int score) {
         GameManager.getInstance().score += score;
         scoreLbl.setText(String.valueOf(GameManager.getInstance().score));
