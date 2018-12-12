@@ -29,14 +29,16 @@ public class Player extends Sprite {
     private com.badlogic.gdx.graphics.g2d.Animation animation1;
     private float elapsedTime;
 
-    private boolean isWalking;
+    private boolean isWalking, isDead;
 
     public Player(World world, float x, float y) {
         super(new Texture("Players/bear.png"));
         this.world = world;
+        this.isDead = false;
         setPosition(x, y);
         createBody();
         playerAtlas = new TextureAtlas("Player Animation/sprites.txt");
+
     }
 
     private void createBody() {
@@ -136,4 +138,11 @@ public class Player extends Sprite {
         this.isWalking = isWalking;
     }
 
+    public void setDead(boolean dead) {
+        this.isDead = dead;
+    }
+
+    public boolean isDead() {
+        return this.isDead;
+    }
 }

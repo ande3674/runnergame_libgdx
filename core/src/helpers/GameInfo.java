@@ -15,5 +15,6 @@ public class GameInfo {
     // Use these constants so you don't have to remember the file names ...
     public static final String COIN = "Coin";
     public static final String LIFE = "life";
+    public static final String SUN = "sol";
 
 }

@@ -172,27 +172,35 @@ public class Gameplay implements Screen, ContactListener {
         // Check player out of bounds to the left...
         if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
             // debug...
-            System.out.println("Player out of bounds to the left");
-            GameManager.getInstance().isPaused = true;
+//            System.out.println("Player out of bounds to the left");
+//            GameManager.getInstance().isPaused = true;
+            if (!player.isDead()){
+                playerDied();
+            }
         }
 
         // Check player out of bounds to right...
         if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f > mainCamera.position.x) {
             // debug...
-            System.out.println("Player out of bounds to the right");
-            GameManager.getInstance().isPaused = true;
+//            System.out.println("Player out of bounds to the right");
+//            GameManager.getInstance().isPaused = true;
+            if (!player.isDead()){
+                playerDied();
+            }
         }
 
-        if(player.getY() > GameInfo.HEIGHT) {
+        if(player.getY() > GameInfo.HEIGHT) { // actually I don't think we will kill him when he goes too high sooo leave this...
             // player out of bounds on the top...
-            System.out.println("Player out of bounds on top");
+            //System.out.println("Player out of bounds on top");
             //GameManager.getInstance().isPaused = true;
-        } else if (player.getY() + player.getHeight() < 0){
+        } else if (player.getY() + player.getHeight() < 0){ // TODO figure out the bottom situation
             // player out of bounds on the bottom
-            System.out.println("Player out of bounds on bottom");
-            GameManager.getInstance().isPaused = true;
+//            System.out.println("Player out of bounds on bottom");
+//            GameManager.getInstance().isPaused = true;
+            if (!player.isDead()){
+                playerDied();
+            }
         }
-
         // TODO Keep player in bounds on the bottom..
 //        if (player.getY() <= 50) {
 //            player.updatePlayer();
@@ -207,6 +215,37 @@ public class Gameplay implements Screen, ContactListener {
             hud.incrementScore(1);
             lastPlayerPos = player.getX();
         }
+    }
+
+    // player died method
+    void playerDied() {
+
+        // player died code
+        // stop game..
+        GameManager.getInstance().isPaused = true;
+
+        // decrement life
+        // do this in UI hud
+        hud.decrementLife();
+
+        player.setDead(true);
+
+        player.setPosition(1200, 1200); // simulate the player being removed from the scene
+
+        if (GameManager.getInstance().lifeScore < 0){
+            // player has no more lives left
+
+            // new high score?????
+
+            // show end score
+
+            // load main menu
+            game.setScreen(new MainMenu(game));
+        } else {
+            // reload the game so player can keep playing
+            game.setScreen(new Gameplay(game));
+        }
+
     }
 
 
@@ -236,7 +275,7 @@ public class Gameplay implements Screen, ContactListener {
 
         game.getBatch().end();
 
-        //debugRenderer.render(world, box2DCamera.combined);
+        debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
@@ -299,28 +338,32 @@ public class Gameplay implements Screen, ContactListener {
             body1 = contact.getFixtureB();
             body2 = contact.getFixtureA();
         }
-        if (body1.getUserData() == "Player" && body2.getUserData() == "Coin"){
+        if (body1.getUserData() == "Player" && body2.getUserData() == GameInfo.COIN){
             // Player collided with a coin...
             // we want to remove coins when they collide with the player...
             // we also want to increment coins
             hud.incrementCoins();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
-
             // debug...
             //System.out.println("COIN!");
         }
 
-        if (body1.getUserData() == "Player" && body2.getUserData() == "life") {
+        if (body1.getUserData() == "Player" && body2.getUserData() == GameInfo.LIFE) {
             // increment life count and remove the life from the screen
             hud.incrementLives();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
-
             // debug...
             //System.out.println("LIFE.");
         }
-        // MUST STILL TELL THE WORLD ABOUT THE CONTACT RULES !
+
+        if (body1.getUserData() == "Player" && body2.getUserData() == GameInfo.SUN) {
+            // hitting a sun means we are dead...
+            if (!player.isDead()){
+                playerDied();
+            }
+        }
     }
 
     @Override

@@ -18,21 +18,24 @@ public class ObstacleController {
     // array of obstacles to add to our game...
     private Array<Obstacle> obstacles = new Array<Obstacle>();
     private Array<Platform> platforms = new Array<Platform>();
+    private Array<Spike> spikes = new Array<Spike>();
     // array of collectable items...
     private Array<Collectables> collectables = new Array<Collectables>();
 
     // Variables to control the platform placement...
     private Random r = new Random();
     private float minPlatformY, maxPlatformY;
+    private float minSpikeY, maxSpikeY;
 
     // keep track of the camera's X position to control our game obstacles
     private float cameraX;
     // keep track of the obstacles' last positions so we can add more as we go
-    private float lastObstaclePositionX, lastPlatformPositionX;
+    private float lastObstaclePositionX, lastPlatformPositionX, lastSpikePositionX;
 
     // CONSTANTS
     private final float DISTANCE_BETWEEN_OBSTACLES = 400f;
     private final float DISTANCE_BETWEEN_PLATFORMS = 500f;
+    private final float DISTANCE_BETWEEN_SPIKES = 500f;
 
 
     // Constructor
@@ -40,6 +43,8 @@ public class ObstacleController {
         this.world = world;
         minPlatformY = GameInfo.HEIGHT * .40f;
         maxPlatformY = GameInfo.HEIGHT * .60f;
+        minSpikeY = GameInfo.HEIGHT * .60f;
+        maxSpikeY = GameInfo.HEIGHT * .80f;
         createObstacles();
         positionObstacles(true);
     }
@@ -51,7 +56,10 @@ public class ObstacleController {
         for (int i = 0 ; i < 5 ; i++){
             platforms.add(new Platform(world, "button"));
         }
-        obstacles.shuffle();
+        for (int i = 0 ; i < 6 ; i++){
+            spikes.add(new Spike(world, "sol"));
+        }
+        //obstacles.shuffle();
     }
 
     public void positionObstacles(boolean firstTimePositioning) {
@@ -71,7 +79,13 @@ public class ObstacleController {
         } else {
             platformPositionX = lastPlatformPositionX;
         }
-
+        // Spikes...
+        float spikePositionX = 0;
+        if (firstTimePositioning){
+            spikePositionX = 300f;
+        } else {
+            spikePositionX = lastSpikePositionX;
+        }
 
         // Place obstacles
         for (Obstacle o : obstacles) {
@@ -92,7 +106,7 @@ public class ObstacleController {
                 platformPositionX += DISTANCE_BETWEEN_PLATFORMS;
                 tempY = r.nextFloat() * (maxPlatformY - minPlatformY) + minPlatformY;
                 lastPlatformPositionX = platformPositionX;
-
+                // Add the collectables .....
                 if (!firstTimePositioning){
                     int rand = r.nextInt(10); // get a random int 0-9
                     if (rand < 8){
@@ -112,9 +126,16 @@ public class ObstacleController {
                 }
             }
         }
-
-        // Add the collectables .....
-
+        float tempSpikeY = r.nextFloat() * (maxSpikeY - minSpikeY) + minSpikeY;
+        // Place Spikes....
+        for (Spike s : spikes){
+            if(s.getX() == 0 && s.getY() == 0) {
+                s.setSpritePosition(spikePositionX, tempSpikeY);
+                spikePositionX += DISTANCE_BETWEEN_SPIKES;
+                tempSpikeY = r.nextFloat() * (maxSpikeY - minSpikeY) + minSpikeY;
+                lastSpikePositionX = spikePositionX;
+            }
+        }
 
         //delete later - testing adding collectables
         Collectables c1 = new Collectables(world, "Coin");
@@ -125,13 +146,16 @@ public class ObstacleController {
         collectables.add(c2);
     }
 
-    // draw the platforms and obstacles...
+    // draw the platforms and obstacles and spikes...
     public void drawObstacles(SpriteBatch batch){
         for (Obstacle o : obstacles){
             batch.draw(o, o.getX() - o.getWidth()/2f, o.getY() - o.getHeight()/2f);
         }
         for (Platform p : platforms){
             batch.draw(p, p.getX() - p.getWidth()/2f, p.getY() - p.getHeight()/2f);
+        }
+        for (Spike s : spikes){
+            batch.draw(s, s.getX() - s.getWidth()/2f, s.getY() - s.getHeight()/2f);
         }
     }
 
@@ -173,7 +197,14 @@ public class ObstacleController {
                 platforms.removeIndex(i);
             }
         }
-        if (obstacles.size + platforms.size == 7){
+        for (int i = 0 ; i < spikes.size ; i++){
+            if ((spikes.get(i).getX() + GameInfo.WIDTH / 2f + GameInfo.WIDTH + 15) < cameraX){
+                // spike is out of bounds - REMOVE IT!
+                spikes.get(i).getTexture().dispose();
+                spikes.removeIndex(i);
+            }
+        }
+        if (obstacles.size + platforms.size == 11){ // TODO this number might need to change
             createObstacles();
             positionObstacles(false);
         }
