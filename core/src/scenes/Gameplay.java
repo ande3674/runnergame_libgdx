@@ -237,8 +237,8 @@ public class Gameplay implements Screen, ContactListener {
 
         if (GameManager.getInstance().lifeScore < 0){
             // player has no more lives left
-
-            // new high score?????
+            // new high score??
+            GameManager.getInstance().checkForNewHighScore();
 
             // show end score
             hud.createGameOverPanel();

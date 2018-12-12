@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import helpers.GameManager;
 import scenes.Gameplay;
 import scenes.MainMenu;
 
@@ -18,6 +19,7 @@ public class GameMain extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		GameManager.getInstance().initializeGameData();
 		// do the music
 		music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music.mp3"));
 		music.setLooping(true);
