@@ -15,6 +15,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
@@ -240,10 +243,39 @@ public class Gameplay implements Screen, ContactListener {
             // show end score
 
             // load main menu
-            game.setScreen(new MainMenu(game));
+            // Use ACTIONS here to create cool effects...
+            // can fade screens, delay time, etc... with RunnableActions
+            RunnableAction run = new RunnableAction();
+            run.setRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.setScreen(new MainMenu(game));
+                }
+            });
+            //sequence action represents the order in which we execute the following actions
+            SequenceAction sa = new SequenceAction();
+            sa.addAction(Actions.delay(2f)); // delay 2 seconds
+            sa.addAction(Actions.fadeOut(1f));// fade out
+            sa.addAction(run);// call runnable action to call our custom code which is running Main Menu
+            // the STAGE executes these actions so make this call...
+            hud.getStage().addAction(sa);
+
         } else {
             // reload the game so player can keep playing
-            game.setScreen(new Gameplay(game));
+            RunnableAction run = new RunnableAction();
+            run.setRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.setScreen(new Gameplay(game));
+                }
+            });
+            //sequence action represents the order in which we execute the following actions
+            SequenceAction sa = new SequenceAction();
+            sa.addAction(Actions.delay(2f)); // delay 2 seconds
+            sa.addAction(Actions.fadeOut(1f));// fade out
+            sa.addAction(run);// call runnable action to call our custom code which is running Main Menu
+            // the STAGE executes these actions so make this call...
+            hud.getStage().addAction(sa);
         }
 
     }
@@ -261,7 +293,7 @@ public class Gameplay implements Screen, ContactListener {
 
         update(delta);
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
@@ -279,6 +311,8 @@ public class Gameplay implements Screen, ContactListener {
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
+        hud.getStage().act(); // Need to call this to execute our runnable/sequence actions!!!
+
         // it is important that the following two statements come after the two before...
         // projection matrix needs to be set to the main camera so we follow its
         // movement on the screen

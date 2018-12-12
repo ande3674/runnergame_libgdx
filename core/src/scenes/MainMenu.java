@@ -46,7 +46,7 @@ public class MainMenu implements Screen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
@@ -58,6 +58,7 @@ public class MainMenu implements Screen {
         // draw the buttons using the Stage...
         game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
         buttons.getStage().draw();
+        buttons.getStage().act();
 
     }
 
