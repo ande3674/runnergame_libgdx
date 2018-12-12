@@ -48,6 +48,7 @@ public class Gameplay implements Screen, ContactListener {
     private ObstacleController obstacleController;
 
     private Player player;
+    private float lastPlayerPos;
 
     private UIHud hud;
 
@@ -79,6 +80,7 @@ public class Gameplay implements Screen, ContactListener {
         obstacleController = new ObstacleController(world);
 
         player = obstacleController.positionThePlayer(player);
+        lastPlayerPos = player.getX(); // TODO OOOOOOOOOOOOOOOOOOOO
 
         createBackgrounds();
     }
@@ -127,6 +129,7 @@ public class Gameplay implements Screen, ContactListener {
             obstacleController.createAndArrangeNewObstacles();
             obstacleController.removeOffScreenCollectables();
             checkPlayerBounds();
+            countScore();
         }
     }
     // moves the camera down along the repeated background images
@@ -173,11 +176,36 @@ public class Gameplay implements Screen, ContactListener {
             GameManager.getInstance().isPaused = true;
         }
 
-        // Check player out of bounds to ...
-        if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
+        // Check player out of bounds to right...
+        if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f > mainCamera.position.x) {
             // debug...
-            System.out.println("Player out of bounds to the left");
+            System.out.println("Player out of bounds to the right");
             GameManager.getInstance().isPaused = true;
+        }
+
+        if(player.getY() > GameInfo.HEIGHT) {
+            // player out of bounds on the top...
+            System.out.println("Player out of bounds on top");
+            //GameManager.getInstance().isPaused = true;
+        } else if (player.getY() + player.getHeight() < 0){
+            // player out of bounds on the bottom
+            System.out.println("Player out of bounds on bottom");
+            GameManager.getInstance().isPaused = true;
+        }
+
+        // TODO Keep player in bounds on the bottom..
+//        if (player.getY() <= 50) {
+//            player.updatePlayer();
+//            // debug...
+//            System.out.println("Player is on the bottom of the screen");
+//            GameManager.getInstance().isPaused = true;
+//        }
+    }
+
+    void countScore() {
+        if (lastPlayerPos < player.getX()){
+            hud.incrementScore(1);
+            lastPlayerPos = player.getX();
         }
     }
 

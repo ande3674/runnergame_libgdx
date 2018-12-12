@@ -83,11 +83,19 @@ public class Player extends Sprite {
         body.setLinearVelocity(x, y);
     }
 
+    // TODO TODO TODO TODO !!!!
     // method to UPDATE the player
     public void updatePlayer() {
         setPosition(body.getPosition().x * GameInfo.PPM,
-                body.getPosition().y * GameInfo.PPM);
-
+                    body.getPosition().y * GameInfo.PPM);
+    }
+    public void updatePlayer2() {
+        if (body.getPosition().y > 20) {
+            setPosition(body.getPosition().x * GameInfo.PPM,
+                    body.getPosition().y * GameInfo.PPM);
+        } else {
+            setPosition(body.getPosition().x * GameInfo.PPM, 20);
+        }
     }
 
     // method to DRAW the player
