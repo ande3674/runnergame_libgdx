@@ -13,7 +13,7 @@ public class GameManager {
     // create some variables to control the game...
     // Game started from main means we set up initial values
     // game started from pause means we preserve lives, coins and score...
-    public boolean gameStartedFromMain, isPaused;
+    public boolean gameStartedFromMain, isPaused = true; // The gameplay class will set this to false when the game is first initiated
     public int lifeScore, coinScore, score;
 
     private GameManager() {

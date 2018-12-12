@@ -97,7 +97,7 @@ public class ObstacleController {
                     int rand = r.nextInt(10); // get a random int 0-9
                     if (rand < 8){
                         int randC = r.nextInt(5);
-                        if (randC < 4){
+                        if (randC < 1){
                             // TODO spawn a life, if life count is lower than 2
                             Collectables collectable = new Collectables(world, GameInfo.LIFE);
                             collectable.setCollectablesPosition(p.getX(), p.getY() + 40);

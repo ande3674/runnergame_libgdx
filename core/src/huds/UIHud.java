@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import scenes.MainMenu;
 
 public class UIHud {
@@ -44,6 +45,18 @@ public class UIHud {
 
         // important for registering clicks!!!
         Gdx.input.setInputProcessor(stage);
+
+        if(GameManager.getInstance().gameStartedFromMain){
+            // this is the first time starting the game!!
+            // set game started from main to false
+            GameManager.getInstance().gameStartedFromMain = false;
+            // set initial values accordingly
+            GameManager.getInstance().lifeScore = 2;
+            GameManager.getInstance().coinScore = 0;
+            GameManager.getInstance().score = 0;
+
+
+        }
 
         // call the create methods...
         createLabels();
@@ -87,9 +100,9 @@ public class UIHud {
         BitmapFont font = generator.generateFont(parameter); // can make as many font styles as needed
 
         // create labels...
-        coinLbl = new Label("x0", new Label.LabelStyle(font, Color.WHITE));
-        lifeLbl = new Label("x1", new Label.LabelStyle(font, Color.WHITE));
-        scoreLbl = new Label("100", new Label.LabelStyle(font, Color.WHITE));
+        coinLbl = new Label("x" + GameManager.getInstance().coinScore, new Label.LabelStyle(font, Color.WHITE));
+        lifeLbl = new Label("x" + GameManager.getInstance().lifeScore, new Label.LabelStyle(font, Color.WHITE));
+        scoreLbl = new Label(String.valueOf(GameManager.getInstance().score), new Label.LabelStyle(font, Color.WHITE));
         scoreLbl2 = new Label("Score:", new Label.LabelStyle(font, Color.WHITE));
 
     }
@@ -109,7 +122,13 @@ public class UIHud {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // code for pausing the game
-                createPausePanel();
+                // make sure the game isnt already paused...
+                if (!GameManager.getInstance().isPaused) {
+                    // pause the game
+                    GameManager.getInstance().isPaused = true;
+                    // pull up the pause panel
+                    createPausePanel();
+                }
             }
         });
 
@@ -130,6 +149,8 @@ public class UIHud {
         resumeBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                removePausePanel();
+                GameManager.getInstance().isPaused = false;
 
             }
         });
@@ -151,6 +172,23 @@ public class UIHud {
         pausePanel.remove();
         resumeBtn.remove();
         quitBtn.remove();
+    }
+
+    public void incrementScore(int score) {
+        GameManager.getInstance().score += score;
+        scoreLbl.setText(String.valueOf(GameManager.getInstance().score));
+    }
+
+    public void incrementCoins() {
+        GameManager.getInstance().coinScore++;
+        coinLbl.setText("x" + GameManager.getInstance().coinScore);
+        incrementScore(200);
+    }
+
+    public void incrementLives() {
+        GameManager.getInstance().lifeScore++;
+        lifeLbl.setText("x" + GameManager.getInstance().lifeScore);
+        incrementScore(300);
     }
 
     public Stage getStage() {

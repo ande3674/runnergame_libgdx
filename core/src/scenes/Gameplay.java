@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.runnergame.GameMain;
 
 import helpers.GameInfo;
+import helpers.GameManager;
 import huds.UIHud;
 import obstacles.Obstacle;
 import obstacles.ObstacleController;
@@ -41,6 +42,8 @@ public class Gameplay implements Screen, ContactListener {
 
     private Sprite[] bgs;
     private float lastXPosition;
+
+    private boolean touchedForTheVeryFirstTime = false; // madonna
 
     private ObstacleController obstacleController;
 
@@ -100,14 +103,30 @@ public class Gameplay implements Screen, ContactListener {
         }
     }
 
+    void checkForFirstTouch() {
+
+        if(!touchedForTheVeryFirstTime){
+            if (Gdx.input.justTouched()){
+                touchedForTheVeryFirstTime = true;
+                GameManager.getInstance().isPaused = false;
+            }
+        }
+    }
+
 
     void update(float dt){
-        handleInput(dt);
-        moveCamera();
-        checkBackgroundsOutOfBounds();
-        obstacleController.setCameraX(mainCamera.position.x);
-        obstacleController.createAndArrangeNewObstacles();
-        obstacleController.removeOffScreenCollectables();
+
+        checkForFirstTouch();
+
+        if (!GameManager.getInstance().isPaused) {
+            // Start a new game with initial values...
+            handleInput(dt);
+            moveCamera();
+            checkBackgroundsOutOfBounds();
+            obstacleController.setCameraX(mainCamera.position.x);
+            obstacleController.createAndArrangeNewObstacles();
+            obstacleController.removeOffScreenCollectables();
+        }
     }
     // moves the camera down along the repeated background images
     void moveCamera(){
@@ -238,15 +257,23 @@ public class Gameplay implements Screen, ContactListener {
         if (body1.getUserData() == "Player" && body2.getUserData() == "Coin"){
             // Player collided with a coin...
             // we want to remove coins when they collide with the player...
-            System.out.println("COIN!");
+            // we also want to increment coins
+            hud.incrementCoins();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
+
+            // debug...
+            //System.out.println("COIN!");
         }
 
         if (body1.getUserData() == "Player" && body2.getUserData() == "life") {
-            System.out.println("LIFE.");
+            // increment life count and remove the life from the screen
+            hud.incrementLives();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
+
+            // debug...
+            //System.out.println("LIFE.");
         }
         // MUST STILL TELL THE WORLD ABOUT THE CONTACT RULES !
     }
