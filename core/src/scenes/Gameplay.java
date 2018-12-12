@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,7 +25,9 @@ import obstacles.Obstacle;
 import obstacles.ObstacleController;
 import player.Player;
 
-public class Gameplay implements Screen {
+// ContactListener picks up contact between the game elements
+
+public class Gameplay implements Screen, ContactListener {
 
     private GameMain game;
 
@@ -62,6 +69,8 @@ public class Gameplay implements Screen {
 
         // in our world we want the force of gravity
         world = new World(new Vector2(0, -9.8f), true);
+        // inform the world that the contact listener is the gameplay class...
+        world.setContactListener(this);
 
         // create obstacle controller
         obstacleController = new ObstacleController(world);
@@ -136,6 +145,8 @@ public class Gameplay implements Screen {
     }
 
 
+    // SCREEN INTERFACE METHODS...
+
     @Override
     public void show() {
 
@@ -153,6 +164,7 @@ public class Gameplay implements Screen {
         drawBackgrounds();
 
         obstacleController.drawObstacles(game.getBatch());
+        obstacleController.drawCollectables(game.getBatch());
 
         player.drawPlayerIdle(game.getBatch());
         player.drawPlayerAnimation(game.getBatch());
@@ -201,5 +213,53 @@ public class Gameplay implements Screen {
         bgs[2].getTexture().dispose();
         player.getTexture().dispose();
         debugRenderer.dispose();
+    }
+
+
+    // CONTACTLISTENER METHODS.........
+    // Dealing with contact in the game...
+    @Override
+    public void beginContact(Contact contact) {
+
+        Fixture body1, body2;
+
+        // Make sure body1 is always the player...
+        if(contact.getFixtureA().getUserData() == "Player"){
+            // Player is FixtureA ...
+            body1 = contact.getFixtureA();
+            body2 = contact.getFixtureB();
+        } else { // player is FixtureB ...
+            body1 = contact.getFixtureB();
+            body2 = contact.getFixtureA();
+        }
+        if (body1.getUserData() == "Player" && body2.getUserData() == "Coin"){
+            // Player collided with a coin...
+            // we want to remove coins when they collide with the player...
+            System.out.println("COIN!");
+            body2.setUserData("Remove");
+            obstacleController.removeCollectables();
+        }
+
+        if (body1.getUserData() == "Player" && body2.getUserData() == "life") {
+            System.out.println("LIFE.");
+            body2.setUserData("Remove");
+            obstacleController.removeCollectables();
+        }
+        // MUST STILL TELL THE WORLD ABOUT THE CONTACT RULES !
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
     }
 }

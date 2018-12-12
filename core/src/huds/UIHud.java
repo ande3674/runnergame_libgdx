@@ -95,7 +95,7 @@ public class UIHud {
     }
 
     void createImages() {
-        coinImg = new Image(new Texture("Collectables/Coin1.png"));
+        coinImg = new Image(new Texture("Collectables/Coin.png"));
         lifeImg = new Image(new Texture("Collectables/portrait.png"));
         // TODO find a score image scoreImg = new Image(new Texture("Collectables/..."));
     }

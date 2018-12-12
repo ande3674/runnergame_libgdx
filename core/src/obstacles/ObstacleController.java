@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
+import collectables.Collectables;
 import helpers.GameInfo;
 import player.Player;
 
@@ -17,6 +18,8 @@ public class ObstacleController {
     // array of obstacles to add to our game...
     private Array<Obstacle> obstacles = new Array<Obstacle>();
     private Array<Platform> platforms = new Array<Platform>();
+    // array of collectable items...
+    private Array<Collectables> collectables = new Array<Collectables>();
 
     // Variables to control the platform placement...
     private Random r = new Random();
@@ -91,8 +94,20 @@ public class ObstacleController {
                 lastPlatformPositionX = platformPositionX;
             }
         }
+
+        // Add the collectables .....
+
+
+        //delete later - testing adding collectables
+        Collectables c1 = new Collectables(world, "Coin");
+        Collectables c2 = new Collectables(world, "life");
+        c1.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 80);
+        c2.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 120);
+        collectables.add(c1);
+        collectables.add(c2);
     }
 
+    // draw the platforms and obstacles...
     public void drawObstacles(SpriteBatch batch){
         for (Obstacle o : obstacles){
             batch.draw(o, o.getX() - o.getWidth()/2f, o.getY() - o.getHeight()/2f);
@@ -101,6 +116,27 @@ public class ObstacleController {
             batch.draw(p, p.getX() - p.getWidth()/2f, p.getY() - p.getHeight()/2f);
         }
     }
+
+    // draw collectable items...
+    public void drawCollectables(SpriteBatch batch){
+        for (Collectables c : collectables){
+            c.updateCollectable();
+            batch.draw(c, c.getX() - c.getWidth()/2f, c.getY() - c.getHeight()/2f);
+        }
+    }
+
+    public void removeCollectables() {
+        for (int i = 0 ; i < collectables.size ; i++) {
+            if (collectables.get(i).getFixture().getUserData() == "Remove"){
+                // we need to change the filter so we inform the physics world that
+                // we aren't going to collide with this collectable anymore
+                collectables.get(i).changeFilter();
+                collectables.get(i).getTexture().dispose();
+                collectables.removeIndex(i);
+            }
+        }
+    }
+
 
     // dispose of obstacles that have gone out of bounds
     // create new ones to replace the old ones

@@ -59,8 +59,12 @@ public class Player extends Sprite {
         fixtureDef.density = 4f; // this is the player body's MASS
         fixtureDef.friction = 2f; // friction prevents player from sliding
         fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = GameInfo.PLAYER; // Define the category (for collisions)
+        // define which categories can this collide with?!?!
+        fixtureDef.filter.maskBits = GameInfo.DEFAULT | GameInfo.COLLECTABLE; // can collide with collectables and defaults
 
         Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData("Player");
 
         shape.dispose();
     }
