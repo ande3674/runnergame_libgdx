@@ -1,6 +1,7 @@
 package helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
@@ -20,6 +21,8 @@ public class GameManager {
     private Json json = new Json();
     // file to save data
     private FileHandle fileHandle = Gdx.files.local("bin/GameData.json"); // local files are read and write
+
+    private Music music;
 
     // create some variables to control the game...
     // Game started from main means we set up initial values
@@ -80,6 +83,25 @@ public class GameManager {
             gameData.setCoinHighscore(coinScore);
         }
         saveData();
+    }
+
+    public void playMusic(){
+        if (music == null){
+            // do the music
+            music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music1.mp3"));
+            //music.play();
+        }
+        if(!music.isPlaying()){
+            music.setLooping(true);
+            music.play();
+        }
+    }
+
+    public void stopMusic() {
+        if (music.isPlaying()){
+            music.stop();
+            music.dispose();
+        }
     }
 
     public static GameManager getInstance() {

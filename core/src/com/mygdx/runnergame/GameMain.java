@@ -14,16 +14,16 @@ import scenes.MainMenu;
 
 public class GameMain extends Game {
 	private SpriteBatch batch;
-	private Music music;
+	//private Music music;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		GameManager.getInstance().initializeGameData();
-		// do the music
-		music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music.mp3"));
-		music.setLooping(true);
-		music.play();
+//		// do the music
+//		music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music.mp3"));
+//		music.setLooping(true);
+//		music.play();
 		// open new game screen
 		setScreen(new MainMenu(this));
 	}

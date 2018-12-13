@@ -335,7 +335,7 @@ public class Gameplay implements Screen, ContactListener {
 
         game.getBatch().end();
 
-        debugRenderer.render(world, box2DCamera.combined);
+        //debugRenderer.render(world, box2DCamera.combined);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();

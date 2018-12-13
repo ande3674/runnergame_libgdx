@@ -58,7 +58,6 @@ public class MainMenuButtons {
         stage.addActor(optionsBtn);
         stage.addActor(quitBtn);
         stage.addActor(musicBtn);
-
     }
 
     private void createAndPositionButtons() {
@@ -126,11 +125,15 @@ public class MainMenuButtons {
         musicBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // do the music
-//                music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music.mp3"));
-//                music.setLooping(true);
-//                music.play();
+                if (GameManager.getInstance().gameData.isMusicOn()){
+                    GameManager.getInstance().gameData.setMusicOn(false);
+                    GameManager.getInstance().stopMusic();
+                } else {
+                    GameManager.getInstance().gameData.setMusicOn(true);
+                    GameManager.getInstance().playMusic();
+                }
 
+                GameManager.getInstance().saveData();
             }
         });
     }
