@@ -46,6 +46,9 @@ public class Gameplay implements Screen, ContactListener {
     private Sprite[] bgs;
     private float lastXPosition;
 
+    // variables to control game difficulty...
+    private float cameraSpeed, cameraMaxSpeed, acceleration = 10;
+
     private boolean touchedForTheVeryFirstTime = false; // madonna
 
     private ObstacleController obstacleController;
@@ -86,6 +89,7 @@ public class Gameplay implements Screen, ContactListener {
         lastPlayerPos = player.getX(); // TODO OOOOOOOOOOOOOOOOOOOO
 
         createBackgrounds();
+        setCameraSpeed(); // sets camera speed based on which difficulty is selected
     }
 
     /*
@@ -126,7 +130,8 @@ public class Gameplay implements Screen, ContactListener {
         if (!GameManager.getInstance().isPaused) {
             // Start a new game with initial values...
             handleInput(dt);
-            moveCamera();
+            moveCamera(dt); // dt is the time it takes for one frame to go to another frame
+                        // ie 60 frames per second.. dt is a very small number
             checkBackgroundsOutOfBounds();
             obstacleController.setCameraX(mainCamera.position.x);
             obstacleController.createAndArrangeNewObstacles();
@@ -136,8 +141,30 @@ public class Gameplay implements Screen, ContactListener {
         }
     }
     // moves the camera down along the repeated background images
-    void moveCamera(){
-        mainCamera.position.x += 1.5f;
+    void moveCamera(float delta){
+        // camera is moving to the right
+        mainCamera.position.x += cameraSpeed * delta;
+        // ... boosting the speed by...
+        cameraSpeed += acceleration * delta;
+        // make sure it doesnt go over the max speed..
+        if (cameraSpeed > cameraMaxSpeed){
+            cameraSpeed = cameraMaxSpeed;
+        }
+    }
+
+    void  setCameraSpeed(){
+        if (GameManager.getInstance().gameData.isEasyDifficulty()){
+            cameraSpeed = 80;
+            cameraMaxSpeed = 100;
+        }
+        if (GameManager.getInstance().gameData.isMediumDifficulty()){
+            cameraSpeed = 100;
+            cameraMaxSpeed = 120;
+        }
+        if (GameManager.getInstance().gameData.isHardDifficulty()){
+            cameraSpeed = 120;
+            cameraMaxSpeed = 140;
+        }
     }
     // this method repeats our background image 3 times so the game can scroll
     void createBackgrounds() {
