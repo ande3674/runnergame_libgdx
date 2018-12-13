@@ -58,6 +58,8 @@ public class MainMenuButtons {
         stage.addActor(optionsBtn);
         stage.addActor(quitBtn);
         stage.addActor(musicBtn);
+
+        checkMusic();
     }
 
     private void createAndPositionButtons() {
@@ -136,6 +138,12 @@ public class MainMenuButtons {
                 GameManager.getInstance().saveData();
             }
         });
+    }
+
+    void checkMusic(){
+        if (GameManager.getInstance().gameData.isMusicOn()) {
+            GameManager.getInstance().playMusic();
+        }
     }
 
     public Stage getStage() {
