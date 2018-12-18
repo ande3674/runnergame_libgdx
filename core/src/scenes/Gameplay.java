@@ -3,6 +3,8 @@ package scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -58,6 +60,8 @@ public class Gameplay implements Screen, ContactListener {
 
     private UIHud hud;
 
+    private Sound coinSound, lifeSound, deadSound;
+
     public Gameplay(GameMain game){
         this.game = game;
 
@@ -76,6 +80,11 @@ public class Gameplay implements Screen, ContactListener {
 
         // create UI
         hud = new UIHud(game);
+
+        // Sound Effects
+        coinSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/coin.wav"));
+        lifeSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/life1.wav"));
+        deadSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/dead.wav"));
 
         // in our world we want the force of gravity
         world = new World(new Vector2(0, -9.8f), true);
@@ -389,6 +398,8 @@ public class Gameplay implements Screen, ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
+        // TODO ADD SOUNDS ON CONTACT
+
         Fixture body1, body2;
 
         // Make sure body1 is always the player...
@@ -404,6 +415,7 @@ public class Gameplay implements Screen, ContactListener {
             // Player collided with a coin...
             // we want to remove coins when they collide with the player...
             // we also want to increment coins
+            coinSound.play();
             hud.incrementCoins();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
@@ -413,6 +425,7 @@ public class Gameplay implements Screen, ContactListener {
 
         if (body1.getUserData() == "Player" && body2.getUserData() == GameInfo.LIFE) {
             // increment life count and remove the life from the screen
+            lifeSound.play();
             hud.incrementLives();
             body2.setUserData("Remove");
             obstacleController.removeCollectables();
@@ -421,6 +434,7 @@ public class Gameplay implements Screen, ContactListener {
         }
 
         if (body1.getUserData() == "Player" && body2.getUserData() == GameInfo.SUN) {
+            deadSound.play();
             // hitting a sun means we are dead...
             if (!player.isDead()){
                 playerDied();
