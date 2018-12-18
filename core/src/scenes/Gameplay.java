@@ -234,12 +234,12 @@ public class Gameplay implements Screen, ContactListener {
             //System.out.println("Player out of bounds on top");
             //GameManager.getInstance().isPaused = true;
         }
-        if (player.getY() < 50){ // TODO figure out the bottom situation
+        //if (player.getY() < 50){ // TODO figure out the bottom situation
             // player out of bounds on the bottom
-            System.out.println("Player out of bounds on bottom");
-            player.setWalking(false);
-            player.setY(50);
-        }
+            //System.out.println("Player out of bounds on bottom");
+            //player.setWalking(false);
+            //player.setY(50);
+        //}
     }
 
     void countScore() {
