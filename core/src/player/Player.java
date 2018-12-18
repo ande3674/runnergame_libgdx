@@ -85,7 +85,6 @@ public class Player extends Sprite {
         body.setLinearVelocity(x, y);
     }
 
-    // TODO TODO TODO TODO !!!!
     // method to UPDATE the player
     public void updatePlayer() {
         setPosition(body.getPosition().x * GameInfo.PPM,

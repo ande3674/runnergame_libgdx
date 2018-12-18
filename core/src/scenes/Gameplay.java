@@ -207,6 +207,7 @@ public class Gameplay implements Screen, ContactListener {
         }
     }
 
+
     void checkPlayerBounds() {
         // Check player out of bounds to the left...
         if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
@@ -232,21 +233,13 @@ public class Gameplay implements Screen, ContactListener {
             // player out of bounds on the top...
             //System.out.println("Player out of bounds on top");
             //GameManager.getInstance().isPaused = true;
-        } else if (player.getY() + player.getHeight() < 0){ // TODO figure out the bottom situation
-            // player out of bounds on the bottom
-//            System.out.println("Player out of bounds on bottom");
-//            GameManager.getInstance().isPaused = true;
-            if (!player.isDead()){
-                playerDied();
-            }
         }
-        // TODO Keep player in bounds on the bottom..
-//        if (player.getY() <= 50) {
-//            player.updatePlayer();
-//            // debug...
-//            System.out.println("Player is on the bottom of the screen");
-//            GameManager.getInstance().isPaused = true;
-//        }
+        if (player.getY() < 50){ // TODO figure out the bottom situation
+            // player out of bounds on the bottom
+            System.out.println("Player out of bounds on bottom");
+            player.setWalking(false);
+            player.setY(50);
+        }
     }
 
     void countScore() {
@@ -390,6 +383,9 @@ public class Gameplay implements Screen, ContactListener {
         bgs[2].getTexture().dispose();
         player.getTexture().dispose();
         debugRenderer.dispose();
+        coinSound.dispose();
+        lifeSound.dispose();
+        deadSound.dispose();
     }
 
 
