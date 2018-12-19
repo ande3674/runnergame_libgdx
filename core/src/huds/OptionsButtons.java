@@ -66,9 +66,9 @@ public class OptionsButtons {
 
     private void createAndPositionButtons() {
         // create buttons...
-        easyBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
-        mediumBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
-        hardBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Button.png"))));
+        easyBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Difficulty/easy.png"))));
+        mediumBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Difficulty/medium.png"))));
+        hardBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/Difficulty/hard.png"))));
         backBtn = new ImageButton(new SpriteDrawable(new Sprite(new Texture("Buttons/arrow_left.png"))));
 
         // FONT CODE...

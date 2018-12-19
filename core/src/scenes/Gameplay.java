@@ -212,34 +212,35 @@ public class Gameplay implements Screen, ContactListener {
         // Check player out of bounds to the left...
         if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f + GameInfo.WIDTH < mainCamera.position.x) {
             // debug...
-//            System.out.println("Player out of bounds to the left");
-//            GameManager.getInstance().isPaused = true;
+            //System.out.println("Player out of bounds to the left");
             if (!player.isDead()){
                 playerDied();
             }
         }
-
         // Check player out of bounds to right...
         if (player.getX() + player.getWidth()/2f - GameInfo.WIDTH / 2f > mainCamera.position.x) {
             // debug...
-//            System.out.println("Player out of bounds to the right");
-//            GameManager.getInstance().isPaused = true;
+            //System.out.println("Player out of bounds to the right");
             if (!player.isDead()){
                 playerDied();
             }
         }
-
-        if(player.getY() > GameInfo.HEIGHT) { // actually I don't think we will kill him when he goes too high sooo leave this...
+        //if(player.getY() > GameInfo.HEIGHT) {
+        // actually I don't think we will kill him when he goes too high sooo leave this...
             // player out of bounds on the top...
             //System.out.println("Player out of bounds on top");
             //GameManager.getInstance().isPaused = true;
-        }
-        //if (player.getY() < 50){ // TODO figure out the bottom situation
-            // player out of bounds on the bottom
-            //System.out.println("Player out of bounds on bottom");
-            //player.setWalking(false);
-            //player.setY(50);
         //}
+
+        checkPlayerBottomBounds();
+    }
+    void checkPlayerBottomBounds(){
+        if (!Gdx.input.justTouched() && player.getY() < 50){
+            player.setWalking(false);
+            player.setY(58);
+        } else {
+
+        }
     }
 
     void countScore() {
