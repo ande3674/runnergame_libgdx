@@ -171,14 +171,13 @@ public class ObstacleController {
                 lastSpikePositionX = spikePositionX;
             }
         }
-
+        Collectables c1 = new Collectables(world, GameInfo.COIN);
+        c1.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 50);
+        collectables.add(c1);
         //delete later - testing adding collectables
-//        Collectables c1 = new Collectables(world, "Coin");
-//        Collectables c2 = new Collectables(world, "life");
-//        c1.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 80);
-//        c2.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 120);
-//        collectables.add(c1);
-//        collectables.add(c2);
+        //Collectables c2 = new Collectables(world, "life");
+        //c2.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 120);
+        //collectables.add(c2);
     }
 
     // draw the platforms and obstacles and spikes...
