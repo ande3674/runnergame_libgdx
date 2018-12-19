@@ -112,7 +112,7 @@ public class Gameplay implements Screen, ContactListener {
             player.movePlayer(2f, 0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)){
             player.setWalking(true);
-            player.movePlayer(0, 2f);
+            player.movePlayer(0, 3f);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             player.setWalking(true);
             player.movePlayer(-2f, 0);
@@ -237,7 +237,7 @@ public class Gameplay implements Screen, ContactListener {
     void checkPlayerBottomBounds(){
         if (!Gdx.input.justTouched() && player.getY() < 50){
             player.setWalking(false);
-            player.setY(58);
+            player.setY(60);
         } else {
 
         }
