@@ -43,27 +43,28 @@ public class ObstacleController {
     public ObstacleController(World world) {
         this.world = world;
         minPlatformY = GameInfo.HEIGHT * .40f;
-        maxPlatformY = GameInfo.HEIGHT * .60f;
-        minSpikeY = GameInfo.HEIGHT * .60f;
+        maxPlatformY = GameInfo.HEIGHT * .70f;
+        minSpikeY = GameInfo.HEIGHT * .30f;
         maxSpikeY = GameInfo.HEIGHT * .80f;
         createObstacles();
         positionObstacles(true);
     }
 
     void createObstacles(){
-        for (int i = 0 ; i < 6 ; i++){
+        for (int i = 0 ; i < 5 ; i++){
             obstacles.add(new Obstacle(world, "kirby"));
         }
-        for (int i = 0 ; i < 5 ; i++){
+        for (int i = 0 ; i < 4 ; i++){
             platforms.add(new Platform(world, "button"));
         }
-        for (int i = 0 ; i < 6 ; i++){
+        for (int i = 0 ; i < 4 ; i++){
             spikes.add(new Spike(world, "sol"));
         }
         //obstacles.shuffle();
     }
 
     public void positionObstacles(boolean firstTimePositioning) {
+        // SET THE POSITIONS / COORDINATES...
         // Obstacles.....
         float y = 50;
         float positionX = 0;
@@ -80,7 +81,7 @@ public class ObstacleController {
         } else {
             platformPositionX = lastPlatformPositionX;
         }
-        // Spikes...
+        // Spikes... (which are actually SUNS now...)
         float spikePositionX = 0;
         if (firstTimePositioning){
             spikePositionX = 300f;
@@ -88,17 +89,19 @@ public class ObstacleController {
             spikePositionX = lastSpikePositionX;
         }
 
-        // Place obstacles
+        // PLACE THEM ON THE SCREEN
+        // Place obstacles -- these are the Kirby guys and are just lined up along the bottom of the screen for now
         for (Obstacle o : obstacles) {
             // make sure we only reposition NEW obstacles and not the ones that
             // are still on / were already on the screen...
-            if (o.getX() == 0 && o.getY() == 0){
+            if (o.getX() == 0 && o.getY() == 0){ // (newly made obstacles will have default values of zero)
                 o.setSpritePosition(positionX, y);
                 positionX += DISTANCE_BETWEEN_OBSTACLES;
                 lastObstaclePositionX = positionX;
             }
         }
 
+        // Pick a random Y-coordinate for the platforms...
         float tempY = r.nextFloat() * (maxPlatformY - minPlatformY)  + minPlatformY;
         // Place platforms...
         for (Platform p : platforms){
@@ -107,9 +110,10 @@ public class ObstacleController {
                 platformPositionX += DISTANCE_BETWEEN_PLATFORMS;
                 tempY = r.nextFloat() * (maxPlatformY - minPlatformY) + minPlatformY;
                 lastPlatformPositionX = platformPositionX;
-                // Add the collectables .....
+                // Add the collectables on top of platforms.....
                 if (!firstTimePositioning){
                     int rand = r.nextInt(10); // get a random int 0-9
+                    // place an obstacle if rand is 0-7...
                     if (rand < 8){
                         int randC = r.nextInt(5);
                         if (randC < 1){
@@ -124,7 +128,8 @@ public class ObstacleController {
                                 collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
                                 collectables.add(collectable);
                             }
-                        } else {
+                        }
+                        else {
                             // spawn a coin
                             Collectables collectable = new Collectables(world, GameInfo.COIN);
                             collectable.setCollectablesPosition(p.getX(), p.getY() + 40);
@@ -132,8 +137,30 @@ public class ObstacleController {
                         }
                     }
                 }
+                else {
+                    // Place a few INITIAL collectables since this is the first time positioning...
+                    // Place on the Kirby's...
+//                    Collectables c1 = new Collectables(world, GameInfo.LIFE);
+//                    c1.setCollectablesPosition(obstacles.get(1).getX(), obstacles.get(1).getY() + 60);
+//                    collectables.add(c1);
+//                    Collectables c2 = new Collectables(world, GameInfo.LIFE);
+//                    c2.setCollectablesPosition(obstacles.get(5).getX(), obstacles.get(5).getY() + 60);
+//                    collectables.add(c2);
+                    Collectables c3 = new Collectables(world, GameInfo.COIN);
+                    c3.setCollectablesPosition(obstacles.get(3).getX(), obstacles.get(3).getY() + 60);
+                    collectables.add(c3);
+//                    // Place on the platforms...
+//                    Collectables c4 = new Collectables(world, GameInfo.COIN);
+//                    c4.setCollectablesPosition(platforms.get(1).getX(), platforms.get(1).getY() + 40);
+//                    collectables.add(c4);
+//                    Collectables c5 = new Collectables(world, GameInfo.COIN);
+//                    c5.setCollectablesPosition(platforms.get(3).getX(), platforms.get(3).getY() + 40);
+//                    collectables.add(c5);
+                }
             }
         }
+
+        // Get a random Y coordinate for the level of the SUN obstacles
         float tempSpikeY = r.nextFloat() * (maxSpikeY - minSpikeY) + minSpikeY;
         // Place Spikes....
         for (Spike s : spikes){
@@ -212,7 +239,7 @@ public class ObstacleController {
                 spikes.removeIndex(i);
             }
         }
-        if (obstacles.size + platforms.size == 11){ // TODO this number might need to change
+        if (obstacles.size + platforms.size == 9){ // TODO this number might need to change
             createObstacles();
             positionObstacles(false);
         }
@@ -223,7 +250,6 @@ public class ObstacleController {
             if ((collectables.get(i).getX() - GameInfo.WIDTH / 2f + GameInfo.WIDTH - 15) < cameraX) {
                 collectables.get(i).getTexture().dispose();
                 collectables.removeIndex(i);
-
                 // debug stuff...
                 //System.out.println("Collectible has been removed!");
             }
