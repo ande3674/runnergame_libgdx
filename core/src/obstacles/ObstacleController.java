@@ -116,7 +116,7 @@ public class ObstacleController {
                     // place an obstacle if rand is 0-7...
                     if (rand < 8){
                         int randC = r.nextInt(5);
-                        if (randC < 1){
+                        if (randC < 2){
                             // spawn a life, if life count is lower than 3
                             if (GameManager.getInstance().lifeScore < 3) {
                                 Collectables collectable = new Collectables(world, GameInfo.LIFE);
