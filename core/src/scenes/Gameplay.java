@@ -395,8 +395,6 @@ public class Gameplay implements Screen, ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
-        // TODO ADD SOUNDS ON CONTACT
-
         Fixture body1, body2;
 
         // Make sure body1 is always the player...
